@@ -1,0 +1,135 @@
+﻿@*@model IEnumerable<CONTROLECT.Models.Atleta>*@
+@model PagedList.IPagedList<CONTROLECT.Models.Atleta>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Atletas - Listar</h4>
+
+<p>
+    <a asp-action="Create" class="btn btn-success btn-sm">Novo</a>
+</p>
+
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Atleta: <input type="text" name="NomeAtleta" value="@ViewData["FiltroAtleta"]" />
+            Apelido: <input type="text" name="Apelido" value="@ViewData["Apelido"]" />
+            Atletas Ativos: <input type="checkbox" name="situacaoFiltro" id="sitFiltro" value="true" checked="@ViewData["SituacaoFiltro"]" />
+
+            <input type="submit" value="Pesquisar" class="btn btn-primary" /> |
+            <a asp-action="Index" class="btn btn-outline-primary">Carregar Listagem completa</a>
+        </p>
+    </div>
+</form>
+
+
+<table id="tblatleta" class="table table-striped table-bordered table-sm table w-auto text-xsmall">
+
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.NomeCompleto)*@
+                Nome Completo
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.NomeCompleto)*@
+                Apelido
+            </th>
+
+            <th>
+                DDD
+                @*@Html.DisplayNameFor(model => model.Ddd)*@
+            </th>
+
+            <th>
+                Celular
+                @*@Html.DisplayNameFor(model => model.Celular)*@
+            </th>
+
+            <th>
+                Ativo
+                @* @Html.DisplayNameFor(model => model.Ativo) *@
+            </th>
+
+            <th>
+                Data de Cadastro
+                @* @Html.DisplayNameFor(model => model.Ativo) *@
+            </th>
+
+            <!--<th>
+                Email-->
+                @*@Html.DisplayNameFor(model => model.Email)*@
+            <!--</th>-->
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeCompleto)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Apelido)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ddd)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Celular)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ativo)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataCadastro)
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdAtleta" class="btn btn-primary btn-sm">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.IdAtleta" class="btn btn-info btn-sm">Detalhes</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdAtleta" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+   Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount
+
+    @if (Model.HasPreviousPage)
+    {
+        @Html.ActionLink("<<", "Index", new { pagina = 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+        @Html.Raw(" ");
+        @Html.ActionLink("< Anterior", "Index", new { pagina = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+    }
+    else
+    {
+        @:<<
+        @Html.Raw(" ");
+        @:< Anterior
+    }
+
+    @if (Model.HasNextPage)
+    {
+        @Html.ActionLink("Próxima >", "Index", new { pagina = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+        @Html.Raw(" ");
+        @Html.ActionLink(">>", "Index", new { pagina = Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+    }
+    else
+    {
+        @:Próxima >
+        @Html.Raw(" ")
+        @:>>
+    }

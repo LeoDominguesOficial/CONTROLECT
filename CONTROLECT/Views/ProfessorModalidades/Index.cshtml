@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CONTROLECT.Models.ProfessorModalidade>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Professor/Modalidade - Listar</h4>
+
+<p>
+    <a asp-action="Create" class="btn btn-success btn-sm">Novo</a>
+</p>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ativo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataOperacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdModalidadeNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdProfessorNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ativo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataOperacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdModalidadeNavigation.NomeModalidade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdProfessorNavigation.NomeProfessor)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdProfessorModalidade" class="btn btn-primary btn-sm">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.IdProfessorModalidade" class="btn btn-info btn-sm">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdProfessorModalidade" class="btn btn-danger btn-sm">Excluir</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,103 @@
+﻿@model IEnumerable<CONTROLECT.Models.Presenca>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Lista de Presença</h4>
+
+<p>
+    <a asp-action="Create" class="btn btn-success btn-sm">Novo</a>
+</p>
+
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Nome: <input type="text" name="NomeAtleta" value="@ViewData["FiltroAtleta"]" />
+
+            @*Modalidade: @Html.DropDownList("ModalidadeId", "--Selecione--")*@
+            Professor: @Html.DropDownList("ProfessorId", "--Selecione--")
+            @* Turno: @Html.DropDownList("TurnoId", "--Selecione--") *@
+            Modalidade: @Html.DropDownList("ModalidadeId", "--Selecione--")
+
+            <P>
+            @*Data Presença: <input type="date" name="DataPresenca" value="@ViewData["FiltroDataPresenca"]" />*@
+            @* Data Presença: <input type="date" name="DataPresenca" value="@DateTime.Now.ToString("yyyy-MM-dd")" /> *@
+            Data Inicio: <input type="date" name="DataInicial" value="@ViewData["FiltroDataInicial"]" />
+            Data Fim: <input type="date" name="DataFinal" value="@ViewData["FiltroDataFinal"]" />
+
+
+            <input type="submit" value="Pesquisar" class="btn btn-primary" /> 
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Data
+            </th>
+            <th>
+                Nome
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdModalidadeNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdProfessorNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdTurno)
+            </th>
+            <th>
+                Dia Venc.
+            </th>
+            <th>
+                Último
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataPresenca)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdAtletaNavigation.NomeCompleto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdModalidadeNavigation.NomeModalidade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdProfessorNavigation.NomeProfessor)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.IdTurnoNavigation.NomeTurno)
+
+                @* <select asp-for=@item.IdTurno class="form-control" asp-items="ViewBag.TurnoId"></select> *@
+            </td>
+            <td>
+                @item.IdAtletaNavigation.DataCadastro.Day
+            </td>
+
+            <td>
+                @item.IdAtletaNavigation.Mensalidade.LastOrDefault().DataPagamento;
+            </td>
+
+
+
+            @*<td>
+            <a asp-action="Edit" asp-route-id="@item.IdPresenca">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.IdPresenca">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.IdPresenca">Delete</a>
+        </td>*@
+        </tr>
+        }
+    </tbody>
+</table>

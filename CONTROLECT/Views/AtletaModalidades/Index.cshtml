@@ -1,0 +1,77 @@
+﻿@model IEnumerable<CONTROLECT.Models.AtletaModalidade>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Atleta/Modalidade - Listar</h4>
+
+<p>
+    <a asp-action="Create" class="btn btn-success btn-sm">Novo</a>
+</p>
+
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Atleta: <input type="text" name="NomeAtleta" value="@ViewData["FiltroAtleta"]" />
+
+            Modalidade: @Html.DropDownList("ModalidadeId", "--Selecione--")
+            Turno: @Html.DropDownList("IdTurno", "--Selecione--")
+
+            <input type="submit" value="Pesquisar" class="btn btn-primary" /> |
+            <a asp-action="Index" class="btn btn-outline-primary">Carregar Listagem completa</a>
+        </p>
+    </div>
+</form>
+
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ativo)
+            </th>
+            <th>
+                Principal
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdTurno)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdAtletaNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdModalidadeNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ativo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AtividadePrincipal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdTurnoNavigation.NomeTurno)
+                @* <select asp-for=@item.IdTurno class="form-control" asp-items="ViewBag.IdTurno"></select> *@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdAtletaNavigation.NomeCompleto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdModalidadeNavigation.NomeModalidade)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdAtletaModalidade" class="btn btn-primary btn-sm">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.IdAtletaModalidade" class="btn btn-info btn-sm">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdAtletaModalidade" class="btn btn-danger btn-sm">Excluir</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

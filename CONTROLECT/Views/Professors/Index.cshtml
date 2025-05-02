@@ -1,0 +1,41 @@
+﻿@model IEnumerable<CONTROLECT.Models.Professor>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Professor - Listar</h4>
+
+<p>
+    <a asp-action="Create" class="btn btn-success btn-sm">Novo</a>
+</p>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeProfessor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ativo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomeProfessor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ativo)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdProfessor" class="btn btn-primary btn-sm">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.IdProfessor" class="btn btn-info btn-sm">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdProfessor" class="btn btn-danger btn-sm">Excluir</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

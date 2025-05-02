@@ -1,0 +1,146 @@
+﻿@*@model IEnumerable<CONTROLECT.Models.Mensalidade>*@
+@model PagedList.IPagedList<CONTROLECT.Models.Mensalidade>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Mensalidades - Listar</h4>
+
+<p>
+    <a asp-action="Create" class="btn btn-success btn-sm">Novo</a>
+</p>
+
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Atleta: <input type="text" name="NomeAtleta" value="@ViewData["FiltroAtleta"]" />
+
+            Professor: @Html.DropDownList("ProfessorId", "--Selecione--")
+            Modalidade: @Html.DropDownList("ModalidadeId", "--Selecione--")
+        </p>
+        <p>
+                    Mês: @Html.DropDownList("Meses", "--Selecione--")
+                    Ano: <input type="text" name="Ano" value="@DateTime.Now.Year" />
+
+
+                    <input type="submit" value="Pesquisar" class="btn btn-primary" /> |
+                    <a asp-action="Index" class="btn btn-outline-primary">Carregar Listagem completa</a>
+
+        </p>
+    </div>
+</form>
+
+
+<table id="tblmensalidade" class="table table-striped table-bordered table-sm table w-auto text-xsmall">
+    <thead>
+        <tr>
+            <th>
+                Pagamento
+            </th>
+            <th>
+                Recibo
+            </th>
+
+            <th>
+                Valor
+            </th>
+            <th>
+                Mês Pgto
+            </th>
+            <th>
+                Forma Pgto
+            </th>
+            <th>
+                Atleta
+            </th>
+            <th>
+                Modalidade
+            </th>
+            <th>
+                Professor
+            </th>
+
+            @*<th></th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataPagamento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroRecibo) / @Html.DisplayFor(modelItem => item.DataPagamento.Year)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Valor)
+            </td>
+            <td>
+@*                 <select asp-for=@item.IdMes class="form-control small" asp-items="ViewBag.Meses" text="Selecione"></select>
+ *@                
+                    @Html.DisplayFor(modelItem => item.IdMesNavigation.NomeMes)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.IdFormaPagamentoNavigation.NomeFormaPagamento)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.IdAtletaNavigation.PrimeiroNome) @Html.DisplayFor(modelItem => item.IdAtletaNavigation.UltimoNome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdModalidadeNavigation.NomeModalidade)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.IdProfessorNavigation.NomeProfessor)
+
+                @* <select asp-for=@item.IdProfessor class="form-control  small" asp-items="ViewBag.IdProfessor"></select> *@
+            </td>
+
+            <td>
+
+                <a asp-action="Edit" asp-route-id="@item.IdMensalidade" class="btn btn-primary btn-sm">Editar</a> |
+                @*<a asp-action="Details" asp-route-id="@item.IdMensalidade" class="btn btn-info btn-sm">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdMensalidade" class="btn btn-danger btn-sm">Excluir</a>*@
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+<div>
+    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount
+
+    @if (Model.HasPreviousPage)
+    {
+        @Html.ActionLink("<<", "Index", new { pagina = 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+        @Html.Raw(" ");
+        @Html.ActionLink("< Anterior", "Index", new { pagina = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+    }
+    else
+    {
+        @:<<
+        @Html.Raw(" ");
+        @:< Anterior
+    }
+
+    @if (Model.HasNextPage)
+    {
+        @Html.ActionLink("Próxima >", "Index", new { pagina = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+        @Html.Raw(" ");
+        @Html.ActionLink(">>", "Index", new { pagina = Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+    }
+    else
+    {
+        @:Próxima >
+        @Html.Raw(" ")
+        @:>>
+    }
+</div>

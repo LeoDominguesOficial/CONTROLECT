@@ -1,0 +1,24 @@
+﻿<div class="row no-gutter">
+    @{
+        string[] imgs = {
+
+                        "~/images/impacto.jpeg"
+             };
+    }
+
+    @foreach (var img in imgs)
+    {
+        <div>
+            <a href="#">
+@*                 <img src="@Url.Content(img)" alt="" width="1280" height="728" style="margin-left:auto; margin-right: auto"/>
+ *@
+
+                <img src="@Url.Content(img)" alt="" width="1180" height="728" style="margin-left:initial; margin-right: initial" />
+
+            </a>
+
+
+
+        </div>
+    }
+</div>

@@ -1,0 +1,83 @@
+﻿@model IEnumerable<CONTROLECT.Models.ItemDespesa>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Listagem de Lançamentos de Despesas</h4>
+
+<p>
+    <a asp-action="Create" class="btn btn-success btn-sm">Novo</a>
+</p>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+
+            Mês: @Html.DropDownList("Meses", "--Selecione--")
+            Ano: <input type="text" name="Ano" value="@DateTime.Now.Year" />
+
+            <input type="submit" value="Pesquisar" class="btn btn-primary" /> |
+            <a asp-action="Index" class="btn btn-outline-primary">Carregar Listagem completa</a>
+        </p>
+    </div>
+</form>
+
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>
+                Despesas
+            </th>
+            <th>
+                Data Pagamento
+            </th>
+
+            <th>
+                Quantidade
+            </th>
+            <th>
+                Valor Unitario
+            </th>
+            <th>
+                Valor Total
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdDespesaNavigation.NomeDespesa)
+            </td>
+                <td>
+                    @* @Html.DisplayFor(modelItem => item.DataPagamento.Day)/@Html.DisplayFor(modelItem =>  item.DataPagamento.Month.ToString("00"))/@Html.DisplayFor(modelItem => item.DataPagamento.Year) *@
+                    @item.DataPagamento.Day.ToString("00")/@item.DataPagamento.Month.ToString("00")/@item.DataPagamento.Year
+
+                </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantidade)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.ValorUnitario)
+            </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValorTotal)
+                </td>
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdItemDespesa" class="btn btn-primary btn-sm">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.IdItemDespesa" class="btn btn-info btn-sm">Detalhes</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdItemDespesa" class="btn btn-danger btn-sm">Excluir</a>
+
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

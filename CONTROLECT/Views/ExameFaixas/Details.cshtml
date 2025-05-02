@@ -1,0 +1,30 @@
+﻿@model CONTROLECT.Models.ExameFaixa
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+<div>
+    <h4>Despesa - Detalhe</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NomeExameFaixa)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NomeExameFaixa)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ativo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ativo)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.IdExameFaixa" class="btn btn-success btn-sm">Editar</a> |
+    <a asp-action="Index" class="btn btn-info">Voltar</a>
+
+</div>

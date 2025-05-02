@@ -1,0 +1,191 @@
+﻿@model CONTROLECT.Models.Mensalidade
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h4>Mensalidade - Salvar</h4>
+<hr />
+
+
+@if (ViewBag.NomesRetorno != null)
+{
+    <div class="col-md-6" style="text-decoration-color:red; color:red">
+        <h2>MENSALIDADES RECEBIDAS:</h2>
+    </div>
+
+    foreach (var nome in ViewBag.NomesRetorno)
+    {
+        <div class="col-md-6" style="text-decoration-color:red; color:red">
+            @nome
+        </div>
+    }
+}
+
+<br />
+
+
+<div class="row">
+    <div class="col-md-4">
+
+
+        @*<select id="ddlatleta1" asp-for="IdAtleta" class="form-control" asp-items="ViewBag.IdAtleta"></select>*@
+
+        <script src="~/Scripts/jquery-1.10.2.js" type="text/javascript"></script>
+
+@*         <script>
+
+            $(function () {
+
+                $("#ddlatleta").change(function () {
+
+                    var ddlorigem = "#ddlatleta";
+                    var url = '@Url.Content("~/")' + "Mensalidades/ObterModalidadesbyid";
+
+                    $.getJSON(url, { idAtleta: $(ddlorigem).val() }, function (data) {
+                        var items = '';
+                        $("#ddlmodalidade").empty();
+                        $.each(data, function (i, row) {
+                            items += "<option value = '" + row.value + "'>" + row.text + "</options>";
+                        });
+                        $("#ddlmodalidade").html(items);
+                    })
+
+                    url = '@Url.Content("~/")' + "Mensalidades/ObterProfessoresbyid";
+                    $.getJSON(url, { idAtleta: $(ddlorigem).val() }, function (data) {
+                        var items = '';
+                        $("#ddlProfessor").empty();
+                        $.each(data, function (i, row) {
+                            items += "<option value = '" + row.value + "'>" + row.text + "</options>";
+                        });
+                        $("#ddlProfessor").html(items);
+                    })
+                })
+            })
+
+        </script>
+ *@
+
+
+        <script>
+            $(function () {
+
+                var modalidades = document.getElementById('ddlmodalidade')
+
+                modalidades.selectedIndex = 0;
+
+                $("#ddlmodalidade").change(function () {
+
+                    var ddlorigem = "#ddlmodalidade";
+                    var url = '@Url.Content("~/")' + "Mensalidades/ObterAtletasbyid";
+
+                    $.getJSON(url, { IdModalidade: $(ddlorigem).val() }, function (data) {
+                        var items = '';
+                        $("#ddlatleta").empty();
+                        $.each(data, function (i, row) {
+                            items += "<option value = '" + row.value + "'>" + row.text + "</options>";
+                        });
+                        $("#ddlatleta").html(items);
+                    })
+
+                    url = '@Url.Content("~/")' + "Mensalidades/ObterProfessoresbyModalidade";
+                    $.getJSON(url, { IdModalidade: $(ddlorigem).val() }, function (data) {
+                        var items = '';
+                        $("#ddlProfessor").empty();
+                        $.each(data, function (i, row) {
+                            items += "<option value = '" + row.value + "'>" + row.text + "</options>";
+                        });
+                        $("#ddlProfessor").html(items);
+                    })
+                })
+            })
+        </script>
+
+
+@*         @if (ViewBag.MensagemRetorno != null)
+        {
+            <div style="text-decoration-color:red; color:red">
+                @ViewBag.MensagemRetorno.ToString();
+            </div>
+        }
+ *@
+    
+        <form asp-action="Create">
+
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+            <div class="form-group">
+                <label asp-for="IdModalidade" class="control-label"></label>
+                <select id="ddlmodalidade" asp-for="IdModalidade"  class="form-control" asp-items="ViewBag.IdModalidade"> 
+                    <option value="0">Selecionar Modalidade</option>
+                </select>
+            </div>
+
+            <div class="form-group" >
+                <label asp-for="IdProfessor" class="control-label"></label>
+                <select id="ddlProfessor" asp-for="IdProfessor" class="form-control" asp-items="ViewBag.IdProfessor" ></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IdAtleta" class="control-label"></label>
+
+                  <select multiple ="multiple" id="ddlatleta"  asp-for="IdAtleta" class="form-control">
+                    <option value="0">Selecionar Atleta</option>
+                </select>
+             </div>
+
+            <div class="form-group">
+                <label asp-for="DataPagamento" class="control-label"></label>
+                <input asp-for="DataPagamento" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="DataPagamento" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IdMes" class="control-label"></label>
+                <select asp-for="IdMes" class="form-control" asp-items="ViewBag.Meses"></select>
+
+                <span asp-validation-for="IdMes" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AnoCorrespondente" class="control-label"></label>
+                <input asp-for="AnoCorrespondente" class="form-control" value="@DateTime.Now.Year"/>
+                <span asp-validation-for="AnoCorrespondente" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Valor" class="control-label"></label>
+                <input asp-for="Valor" class="form-control" />
+                <span asp-validation-for="Valor" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="QuitadoProfessor" /> @Html.DisplayNameFor(model => model.QuitadoProfessor)
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IdFormaPagamento" class="control-label"></label>
+                <select asp-for="IdFormaPagamento" class="form-control" asp-items="ViewBag.IdFormaPagamento"></select>
+                <span asp-validation-for="IdFormaPagamento" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Observacao" class="control-label"></label>
+                <input asp-for="Observacao" class="form-control" />
+                <span asp-validation-for="Observacao" class="text-danger"></span>
+            </div>
+                
+
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-info">Voltar</a>
+            </div>
+        </form>
+        
+    </div>
+</div>
+

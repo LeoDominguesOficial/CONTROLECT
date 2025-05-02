@@ -1,0 +1,97 @@
+﻿@model IEnumerable<CONTROLECT.ViewModels.RelatorioLojaVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Relatório de vendas de Materiais - Analítico</h1>
+
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Item: @Html.DropDownList("ItemId", "--Selecione--")
+            Data Inicial: <input type="date" name="DataInicial" value= @DateTime.Now.ToString("yyyy-MM-dd")  />
+            Data Final: <input type="date" name="DataFinal" value=@DateTime.Now.ToString("yyyy-MM-dd") />
+
+
+        </p>
+
+        <input type="submit" value="Pesquisar" class="btn btn-primary" />
+        @*<a asp-action="Index" class="btn btn-outline-primary">Carregar Listagem completa</a>*@
+    </div>
+</form>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeItem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValorUnitario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantidade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValorTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataVenda)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comprador)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quitado)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeItem)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValorUnitario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantidade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValorTotal)
+                </td>
+                <td>
+                    @item.DataVenda.Day/@item.DataVenda.Month.ToString("00")/@item.DataVenda.Year
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comprador)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quitado)
+                </td>
+
+
+                <td>
+                    @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    Período do Relatório: @ViewBag.PeriodoRelatorio
+</div>
+
+<div>
+    Valor Recebido: @ViewBag.ValorTotalRecebido
+</div>

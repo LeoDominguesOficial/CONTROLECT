@@ -1,0 +1,55 @@
+﻿@model CONTROLECT.Models.ItemDespesa
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h4>Editar Item</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdItemDespesa" />
+
+            <div class="form-group">
+                <label asp-for="IdDespesa" class="control-label"></label>
+                <select asp-for="IdDespesa" class="form-control" asp-items="ViewBag.IdDespesa"></select>
+                <span asp-validation-for="IdDespesa" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ValorUnitario" class="control-label"></label>
+                <input asp-for="ValorUnitario" class="form-control" />
+                <span asp-validation-for="ValorUnitario" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Quantidade" class="control-label"></label>
+                <input asp-for="Quantidade" class="form-control" />
+                <span asp-validation-for="Quantidade" class="text-danger"></span>
+            </div>
+
+@*             <div class="form-group" >
+                <label asp-for="ValorTotal" class="control-label"></label>
+                <input asp-for="ValorTotal" class="form-control" contenteditable="false" />
+                <span asp-validation-for="ValorTotal" class="text-danger"></span>
+            </div>
+ *@
+            <div class="form-group">
+                <label asp-for="DataPagamento" class="control-label"></label>
+                <input asp-for="DataPagamento" class="form-control" />
+                <span asp-validation-for="DataPagamento" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-info">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+

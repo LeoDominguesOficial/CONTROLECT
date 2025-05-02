@@ -1,0 +1,41 @@
+﻿@model CONTROLECT.Models.ItemDespesa
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h3>Apagar esse Item?</h3>
+<div>
+    <h4>Modalidade - Excluir</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdDespesaNavigation.NomeDespesa)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdDespesaNavigation.NomeDespesa)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ValorTotal)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ValorTotal)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DataPagamento)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DataPagamento)
+        </dd>
+
+
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="IdItemDespesa" />
+        <input type="submit" value="Apagar" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-info">Voltar</a>
+    </form>
+</div>

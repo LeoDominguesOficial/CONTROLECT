@@ -1,0 +1,68 @@
+﻿@model IEnumerable<CONTROLECT.ViewModels.RelatorioMensalidadeVM>
+
+@{
+    ViewData["Title"] = "IndexSintetico";
+}
+
+<h1>Relatório Mensalidade - Sintético</h1>
+
+@*<p>
+    <a asp-action="Create">Create New</a>
+</p>*@
+
+
+<form asp-action="IndexSintetico" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Modalidade: @Html.DropDownList("ModalidadeId", "--Selecione--")
+            Professor: @Html.DropDownList("ProfessorId", "--Selecione--")
+            Mês: @Html.DropDownList("Mes", "--Selecione--")
+            Ano: <input type="text" name="Ano" value="@DateTime.Now.Year" />
+
+            <input type="submit" value="Pesquisar" class="btn btn-primary" />
+            @*<a asp-action="Index" class="btn btn-outline-primary">Carregar Listagem completa</a>*@
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeProfessor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeModalidade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Valor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValorRepasseProfessor)
+            </th>
+
+            <th>Valor do CT</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomeProfessor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomeModalidade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Valor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValorRepasseProfessor)
+            </td>
+            <td>
+                 @item.ValorCT
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

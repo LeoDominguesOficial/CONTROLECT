@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CONTROLECT</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="@Url.Action("Index", "Home")">IMPACTO IRAJÁ</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#conteudoNavbarSuportado" aria-controls="conteudoNavbarSuportado" aria-expanded="false" aria-label="Alterna navegação">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="conteudoNavbarSuportado">
+                <ul class="navbar-nav mr-auto">
+                    @*<li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+        </li>*@
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Cadastros
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="@Url.Action("Index", "Atletas")">Atletas</a>
+                            <a class="dropdown-item" href="@Url.Action("Index", "Despesas")">Despesas</a>
+                            <a class="dropdown-item" href="@Url.Action("Index", "ExameFaixas")">Exames de Faixa</a>
+                            <a class="dropdown-item" href="@Url.Action("Index", "Faixas")">Faixas</a>
+                            <a class="dropdown-item" href="@Url.Action("Index", "Items")">Materiais</a>
+                            <a class="dropdown-item" href="@Url.Action("IndexLanchonete", "Items")">Itens Lanchonete</a>
+                            <a class="dropdown-item" href="@Url.Action("Index", "Modalidades")">Modalidades</a>
+                            <a class="dropdown-item" href="@Url.Action("Index", "Professors")">Professores</a>
+                            <a class="dropdown-item" href="@Url.Action("Index", "Usuarios")">Usuários</a>
+
+                            @*<div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Algo mais aqui</a>*@
+                        </div>
+                    </li>
+
+                    <li class="nav-item active">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="AtletaModalidades" asp-action="Index">Atletas por Modalidade</a>
+                    </li>
+
+                    <li class="nav-item active">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="ProfessorModalidades" asp-action="Index">Professores por Modalidade</a>
+                    </li>
+
+                    <li class="nav-item active">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Presencas" asp-action="Index">Lista de Presença</a>
+                    </li>
+
+
+@*                     <li class="nav-item active">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Mensalidades" asp-action="Index">Mensalidade</a>
+                    </li>
+ *@
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Recebimentos
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="@Url.Action("Index", "Mensalidades")">Mensalidades</a>
+                            <a class="dropdown-item" href="@Url.Action("Index", "ExameFaixaDetalhes")">Exame de Faixa/Federação/Competições</a>
+@*                             <a class="dropdown-item" href="@Url.Action("Index", "ItemVendas")">Loja</a>
+                            <a class="dropdown-item" href="@Url.Action("IndexLanchonete", "ItemVendas")">Lanchonete</a>
+ *@
+                            @* <a class="dropdown-item" href="@Url.Action("IndexSintetico", "RelatorioMensalidades")">Relatório Mensalidades - Sintético</a> *@
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Despesas
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="@Url.Action("Index", "Despesas")">Cadastrar Despesas</a>
+                            <a class="dropdown-item" href="@Url.Action("Index", "ItemDespesas")">Lançar Despesas</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Relatórios
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="@Url.Action("Index", "RelatorioMensalidades")">Relatório Mensalidades - Analítico</a>
+                            <a class="dropdown-item" href="@Url.Action("IndexSintetico", "RelatorioMensalidades")">Relatório Mensalidades - Sintético</a>
+                            <a class="dropdown-item" href="@Url.Action("Index", "RelatorioLanchonetes")">Relatório Lanchonete - Analítico</a>
+                            <a class="dropdown-item" href="@Url.Action("Index", "RelatorioLojas")">Relatório Loja - Analítico</a>
+                            @* <a class="dropdown-item" href="@Url.Action("Index", "RelatorioDespesas")">Relatório Despesa - Analítico</a> *@
+                        </div>
+                    </li>
+
+
+                    @*<li class="nav-item active">
+            <a class="nav-link text-dark" asp-area="" asp-controller="RelatorioMensalidades" asp-action="Index">Relatório Mensalidades</a>
+        </li>*@
+
+
+                    @*<li class="nav-item">
+            <a class="nav-link disabled" href="#">Desativado</a>
+        </li>*@
+                </ul>
+                @*<form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Pesquisar" aria-label="Pesquisar">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
+                </form>*@
+            </div>
+        </nav>
+
+
+
+
+
+        @*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">C.T TIME UNIÃO</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Atletas" asp-action="Index">Atletas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuários</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Modalidades" asp-action="Index">Modalidades</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Professors" asp-action="Index">Professores</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ProfessorModalidades" asp-action="Index">Professores por Modalidade</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="AtletaModalidades" asp-action="Index">Atletas por Modalidade</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Mensalidades" asp-action="Index">Mensalidade</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>*@
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            2020 - CONTROLECT - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,111 @@
+﻿@model IEnumerable<CONTROLECT.ViewModels.RelatorioMensalidadeVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Relatório Mensalidades - Analítico</h1>
+
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Atleta: <input type="text" name="NomeAtleta" value="@ViewData["FiltroAtleta"]" />
+            Modalidade: @Html.DropDownList("ModalidadeId", "--Selecione--")
+            Professor: @Html.DropDownList("ProfessorId", "--Selecione--")
+        </p>
+        <p>
+            Forma Pgto: @Html.DropDownList("FormaPagamentoId", "--Selecione--")
+
+            Mês: @Html.DropDownList("Mes", "--Selecione--")
+            Ano: <input type="text" name="Ano" value="@DateTime.Now.Year" />
+
+
+            <input type="submit" value="Pesquisar" class="btn btn-primary" />
+            @*<a asp-action="Index" class="btn btn-outline-primary">Carregar Listagem completa</a>*@
+        </p>
+    </div>
+</form>
+
+
+@*<p>
+        <a asp-action="Create">Create New</a>
+    </p>*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeCompleto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeProfessor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeModalidade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumeroRecibo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Valor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValorRepasseProfessor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataPagamento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuitadoProfessor)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeCompleto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeProfessor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeModalidade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumeroRecibo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Valor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValorRepasseProfessor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataPagamento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuitadoProfessor)
+                </td>
+
+
+                <td>
+                    @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    Valor Total Recebido: @ViewBag.ValorTotalRecebido
+</div>
+
+<div>
+    Valor Repasse Professor: @ViewBag.ValorTotalRepasse
+</div>

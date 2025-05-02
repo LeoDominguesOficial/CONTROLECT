@@ -1,0 +1,162 @@
+﻿@model CONTROLECT.Models.Presenca
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h4>Lista de Presença - Salvar</h4>
+
+
+<script src="~/Scripts/jquery-1.10.2.js" type="text/javascript"></script>
+
+@if (ViewBag.NomesRetorno != null)
+{
+    <div class="col-md-6" style="text-decoration-color:red; color:red">
+        <h2>PRESENÇAS CADASTRADAS:</h2>
+    </div>
+
+    foreach (var nome in ViewBag.NomesRetorno)
+    {
+        <div class="col-md-6" style="text-decoration-color:red; color:red">
+            @nome
+        </div>
+    }
+}
+
+@* <script>
+
+            $(function () {
+
+                $("#ddlatleta").change(function () {
+
+                    var ddlorigem = "#ddlatleta";
+                    var url = '@Url.Content("~/")' + "Presencas/ObterModalidadesbyid";
+
+                    $.getJSON(url, { idAtleta: $(ddlorigem).val() }, function (data) {
+                        var items = '';
+                        $("#ddlModalidade").empty();
+                        $.each(data, function (i, row) {
+                            items += "<option value = '" + row.value + "'>" + row.text + "</options>";
+                        });
+                        $("#ddlModalidade").html(items);
+                    })
+
+                    url = '@Url.Content("~/")' + "Presencas/ObterProfessoresbyid";
+                    $.getJSON(url, { idAtleta: $(ddlorigem).val() }, function (data) {
+                        var items = '';
+                        $("#ddlProfessor").empty();
+                        $.each(data, function (i, row) {
+                            items += "<option value = '" + row.value + "'>" + row.text + "</options>";
+                        });
+                        $("#ddlProfessor").html(items);
+                    })
+                })
+            })
+
+</script>
+ *@
+
+
+<script>
+    $(function () {
+
+        var modalidades = document.getElementById('ddlmodalidade')
+
+        modalidades.selectedIndex = 0;
+
+        $("#ddlmodalidade").change(function () {
+
+            var ddlorigem = "#ddlmodalidade";
+            var url = '@Url.Content("~/")' + "Mensalidades/ObterAtletasbyid";
+
+            $.getJSON(url, { IdModalidade: $(ddlorigem).val() }, function (data) {
+                var items = '';
+                $("#ddlatleta").empty();
+                $.each(data, function (i, row) {
+                    items += "<option value = '" + row.value + "'>" + row.text + "</options>";
+                });
+                $("#ddlatleta").html(items);
+            })
+
+            url = '@Url.Content("~/")' + "Mensalidades/ObterProfessoresbyModalidade";
+            $.getJSON(url, { IdModalidade: $(ddlorigem).val() }, function (data) {
+                var items = '';
+                $("#ddlProfessor").empty();
+                $.each(data, function (i, row) {
+                    items += "<option value = '" + row.value + "'>" + row.text + "</options>";
+                });
+                $("#ddlProfessor").html(items);
+            })
+        })
+    })
+</script>
+
+
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @*     <div class="form-group">
+                <label asp-for="IdAtleta" class="control-label"></label>
+                <select id="ddlatleta" asp-for="IdAtleta" class="form-control" asp-items="ViewBag.IdAtleta">
+                    <option value="0">Selecionar Atleta</option>
+                </select>
+            </div>*@
+
+
+            <div class="form-group">
+                <label asp-for="IdModalidade" class="control-label"></label>
+                <select id="ddlmodalidade" asp-for="IdModalidade" class="form-control" asp-items="ViewBag.IdModalidade">
+                    <option value="0">Selecionar Modalidade</option>
+                </select>
+            </div>
+
+
+@*             <div class="form-group">
+                <label asp-for="IdModalidade" class="control-label"></label>
+                <select id="ddlModalidade" asp-for="IdModalidade" class="form-control" asp-items="ViewBag.IdModalidade"></select>
+            </div>
+ *@            
+            <div class="form-group">
+                <label asp-for="IdProfessor" class="control-label"></label>
+                <select id="ddlProfessor" asp-for="IdProfessor" class="form-control" asp-items="ViewBag.IdProfessor"></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IdAtleta" class="control-label"></label>
+
+                <select multiple="multiple" id="ddlatleta" asp-for="IdAtleta" class="form-control">
+                    <option value="0">Selecionar Atleta</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IdTurno" class="control-label"></label>
+                <select asp-for="IdTurno" class="form-control" asp-items="ViewBag.IdTurno"></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DataPresenca" class="control-label"></label>
+                <input asp-for="DataPresenca" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="DataPresenca" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-info">Voltar</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@*<div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }*@

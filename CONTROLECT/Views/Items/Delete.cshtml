@@ -1,0 +1,25 @@
+﻿@model CONTROLECT.Models.Item
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h3>Apagar esse Item?</h3>
+<div>
+    <h4>Modalidade - Excluir</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NomeItem)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NomeItem)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="IdItem" />
+        <input type="submit" value="Apagar" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-info">Voltar</a>
+    </form>
+</div>
