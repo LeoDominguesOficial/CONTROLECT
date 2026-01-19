@@ -465,7 +465,7 @@ namespace CONTROLECT.Models
                     .HasName("PK__PRESENCA__50FB6F5D88DB9488");
 
                 entity.ToTable("PRESENCA");
-
+                 
                 entity.Property(e => e.DataPresenca).HasColumnType("date");
                 entity.Property(e => e.IdTurno).HasDefaultValueSql("((1))");
                 entity.Property(e => e.DataPresenca).HasColumnType("date");

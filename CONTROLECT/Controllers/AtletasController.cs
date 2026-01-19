@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CONTROLECT.Models;
 using PagedList;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CONTROLECT.Controllers
 {
@@ -35,15 +36,19 @@ namespace CONTROLECT.Controllers
             ViewData["FiltroApelido"] = apelido;
             ViewData["SituacaoFiltro"] = situacaoFiltro;
 
-            if (TempData["PrimeiroAcesso"] == null)
+            if (TempData["PrimeiroAcesso"] is true)
             {
                 ViewData["SituacaoFiltro"] = true;
-                TempData["PrimeiroAcesso"] = true;
+                TempData["PrimeiroAcesso"] = false;
                 situacaoFiltro = true;
             }
             else
+
             {
-                TempData["PrimeiroAcesso"] = true;
+                //TempData["PrimeiroAcesso"] = true;
+                //ViewData["SituacaoFiltro"] = true;
+                TempData["PrimeiroAcesso"] = false;
+
             }
 
             var atletas = from s in _context.Atleta
@@ -59,9 +64,10 @@ namespace CONTROLECT.Controllers
                 atletas = atletas.Where(s => s.Apelido.ToUpper().Contains(apelido.ToUpper()));
             }
 
-
+            if (situacaoFiltro)
+            {
                 atletas = atletas.Where(s => s.Ativo.Equals(situacaoFiltro));
-
+            }
             switch (sortOrder)
             {
                 case "name_desc":
@@ -77,6 +83,9 @@ namespace CONTROLECT.Controllers
                     atletas = atletas.OrderBy(s => s.NomeCompleto);
                     break;
             }
+
+            var skip = (paginaNumero - 1) * paginaTamanho;
+            atletas.Skip(skip).Take(paginaTamanho);
 
             return View(atletas.ToPagedList(paginaNumero, paginaTamanho));
             //return View(await atletas.AsNoTracking().ToListAsync());

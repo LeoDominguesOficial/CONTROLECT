@@ -33,7 +33,7 @@
 </form>
 
 
-<table id="tblmensalidade" class="table table-striped table-bordered table-sm table w-auto text-xxsmall">
+<table id="table">
     <thead>
         <tr>
             <th>
@@ -105,8 +105,8 @@
             <td>
 
                 <a asp-action="Edit" asp-route-id="@item.IdMensalidade" class="btn btn-primary btn-sm">Editar</a> |
-                @*<a asp-action="Details" asp-route-id="@item.IdMensalidade" class="btn btn-info btn-sm">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdMensalidade" class="btn btn-danger btn-sm">Excluir</a>*@
+                    @*<a asp-action="Details" asp-route-id="@item.IdMensalidade" class="btn btn-info btn-sm">Detalhes</a> |*@
+                <a asp-action="Delete" asp-route-id="@item.IdMensalidade" class="btn btn-danger btn-sm">Excluir</a>
             </td>
         </tr>
         }
@@ -120,9 +120,9 @@
 
     @if (Model.HasPreviousPage)
     {
-        @Html.ActionLink("<<", "Index", new { pagina = 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+        @Html.ActionLink("<<", "Index", new { pagina = 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, nomeAtleta = ViewData["FiltroAtleta"], modalidadeId = ViewData["FiltroModalidade"], professorId = ViewData["FiltroProfessor"], meses = ViewData["FiltroMes"], ano = ViewData["Ano"] })
         @Html.Raw(" ");
-        @Html.ActionLink("< Anterior", "Index", new { pagina = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+        @Html.ActionLink("< Anterior", "Index", new { pagina = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, nomeAtleta = ViewData["FiltroAtleta"], modalidadeId = ViewData["FiltroModalidade"], professorId = ViewData["FiltroProfessor"], meses = ViewData["FiltroMes"], ano = ViewData["Ano"] })
     }
     else
     {
@@ -133,9 +133,9 @@
 
     @if (Model.HasNextPage)
     {
-        @Html.ActionLink("Próxima >", "Index", new { pagina = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+        @Html.ActionLink("Próxima >", "Index", new { pagina = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, nomeAtleta = ViewData["FiltroAtleta"], modalidadeId = ViewData["FiltroModalidade"], professorId = ViewData["FiltroProfessor"], meses = ViewData["FiltroMes"], ano = ViewData["Ano"] })
         @Html.Raw(" ");
-        @Html.ActionLink(">>", "Index", new { pagina = Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+        @Html.ActionLink(">>", "Index", new { pagina = Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, nomeAtleta = ViewData["FiltroAtleta"], modalidadeId = ViewData["FiltroModalidade"], professorId = ViewData["FiltroProfessor"], meses = ViewData["FiltroMes"], ano = ViewData["Ano"] })
     }
     else
     {

@@ -16,6 +16,13 @@ using System.Drawing;
 using SQLitePCL;
 using System.Text;
 using System.Reflection.Metadata;
+using MailKit.Net.Smtp;
+using MailKit;
+using MimeKit;
+using System.Net;
+using System.Net.Mail;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace CONTROLECT.Controllers
 {
@@ -157,14 +164,15 @@ namespace CONTROLECT.Controllers
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
 
-            if (ano == 0)
+            if (ano > 0)
             {
-                ViewData["Ano"] = System.DateTime.Now.Year;
+                ViewData["Ano"] = ano; 
+                //ViewData["Ano"] = System.DateTime.Now.Year;
             }
-            else
-            {
-                ViewData["Ano"] = ano;
-            }
+            //else
+            //{
+            //    ViewData["Ano"] = ano;
+            //}
 
             ViewData["FiltroAtleta"] = nomeAtleta;
             ViewData["FiltroModalidade"] = modalidadeId;
@@ -208,6 +216,11 @@ namespace CONTROLECT.Controllers
             {
                 mensalidades = mensalidades.Where(s => s.AnoCorrespondente == ano);
             }
+
+            ViewData["FiltroModalidade"] = modalidadeId;
+            ViewData["FiltroMes"] = meses;
+            ViewData["FiltroProfessor"] = professorId;
+
 
             switch (sortOrder)
             {
@@ -343,6 +356,13 @@ namespace CONTROLECT.Controllers
                 _context.Add(mensalidade);
                 await _context.SaveChangesAsync();
 
+                //Enviar email para o atleta com o comprovanmte
+                
+                
+                
+                EnviarEmail(mensalidade.NumeroRecibo.ToString() + AnoCorrespondente.ToString(), "ldomingues@gmail.com", mensalidade.Valor, IdMes.ToString(), "Teste Usuário");
+
+
                 objAtleta = _context.Atleta.Where(a => a.IdAtleta.Equals(mensalidade.IdAtleta)).FirstOrDefault();
 
                 listaNome.Add(objAtleta.NomeCompleto);
@@ -368,61 +388,93 @@ namespace CONTROLECT.Controllers
         }
 
 
-        private void EnviarEmail(string emailDestinatario, decimal valor, string mes, string nomeAtleta)
+        private void EnviarEmail(string Recibo, string emailDestinatario, decimal valor, string mes, string nomeAtleta)
         {
             try
             {
                 var descricaoEmail = string.Empty;
-                emailDestinatario = "ldomingues@gmail.com";
 
                 descricaoEmail = "Recebemos de nomeAtleta";
 
                 descricaoEmail.Replace("nomeAtleta", nomeAtleta);
 
 
+                var email = new MimeMessage();
 
-                MailMessage mail = new MailMessage();
-                mail.To.Add(emailDestinatario.Trim());
-                mail.To.Add("ldomingues@gmail.com");
-                mail.From = new MailAddress("leonardodomingues.ujcrj@gmail.com");
-                mail.Subject = "Confirmation of Registration on Job Junction.";
-                string Body = "Hi, this mail is to test sending mail using Gmail in ASP.NET";
-                mail.Body = Body;
-                mail.IsBodyHtml = true;
-                SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-                // smtp.Host = "smtp.gmail.com"; //Or Your SMTP Server Address
-                smtp.UseDefaultCredentials = false;
-                smtp.EnableSsl = true;
-                smtp.Credentials = new System.Net.NetworkCredential("leonardodomingues.ujcrj@gmail.com", "Leozinhojudoca&1");
-                // smtp.Port = 587;
-                //Or your Smtp Email ID and Password
-                smtp.Send(mail);
+                email.From.Add(new MailboxAddress("Impacto Iraja", "leodomingues.oficial@outlook.com"));
+                email.To.Add(new MailboxAddress(nomeAtleta, "ldomingues@gmail.com"));
 
+                email.Subject = "Testing out email sending";
+                email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+                {
+                    Text = "<b>Hello all the way from the land of C#</b>"
+                };
 
+                //var smtp = new MailKit.Net.Smtp.SmtpClient();
 
-
-                ////Instância classe email
-                //MailMessage mail = new MailMessage();
-                //mail.To.Add(emailDestinatario);
-                //mail.From = new MailAddress("leonardodomingues.ujcrj@gmail.com");
-                //mail.Subject = "Mensalidade CT TIME UNIÃO";
-                //string Body = descricaoEmail;
-                //mail.Body = Body;
-                //mail.IsBodyHtml = true;
-
-                ////Instância smtp do servidor, neste caso o gmail.
-                //SmtpClient smtp = new SmtpClient();
-                //smtp.Host = "smtp.gmail.com";
-                //smtp.Port = 587;
-                ////smtp.Port = 465;
                 //smtp.UseDefaultCredentials = false;
-                //smtp.Credentials = new System.Net.NetworkCredential
-                //("leonardodomingues.ujcrj@gmail.com", "Leozinhojudoca&1");// Login e senha do e-mail.
-                //smtp.EnableSsl = true;
-                //smtp.Send(mail);
-                ////return View("Index", _objModelMail);
+
+                //smtp.ConnectAsync("smtp-mail.outlook.com", 587, false);
+
+                //// Note: only needed if the SMTP server requires authentication
+                //smtp.AuthenticateAsync(@"leodomingues.oficial@outlook.com.br", @"L&ozinhoJudoca&1");
+
+                //smtp.SendAsync(email);
+                //smtp.DisconnectAsync(true);
+
+
+
+                using (var smtp1 = new MailKit.Net.Smtp.SmtpClient())
+                {
+
+
+                    smtp1.Connect("smtp.offie365.com", 587, false);
+                    //smtp1.Connect("smtp.gmail.com", 587, false);
+                    // Note: only needed if the SMTP server requires authentication
+                    smtp1.Authenticate(@"leodomingues.oficial@outlook.com", @"L&ozinhoJudoca&1");
+
+                    smtp1.Send(email);
+                    smtp1.Disconnect(true);
+                }
+
+                //using (var emailClient = new MailKit.Net.Smtp.SmtpClient())
+                //{
+                //    //O ultimo parametro é para usar SSL
+                //    emailClient.Connect("smtp.gmail.com", 587, false);
+
+                //    //Remover qualquer funcionalidade OAuth
+                //    emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
+                //    emailClient.Authenticate(@"ldomingues@gmail.com", @"L&ozinhoJudoca#10");
+                //    emailClient.Send(email);
+                //    emailClient.Disconnect(true);
+                //}
+
+                //var message = new MailMessage();
+                //message.From = new MailAddress("ldomingues@gmal.com");
+                //message.Body = "teste de envio de email";
+
+                //using (var emailClient = new System.Net.Mail.SmtpClient())
+                //{
+                //    //O ultimo parametro é para usar SSL
+                //    emailClient.Host = "smtp.gmail.com";
+                //    emailClient.Port = 587;
+                //    emailClient.EnableSsl = true;
+                //    emailClient.UseDefaultCredentials = false;
+                //    emailClient.Credentials = new NetworkCredential(@"ldomingues@gmail.com", @"L&ozinhoJudoca#10");
+                //    emailClient.Send(message);
+                //    emailClient.Dispose();
+
+                //    ////Remover qualquer funcionalidade OAuth
+                //    //emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
+                //    //emailClient.Authenticate(@"ldomingues@gmail.com", @"L&ozinhoJudoca#10");
+                //    //emailClient.Send(email);
+                //    //emailClient.Disconnect(true);
+                //}
+
+
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
