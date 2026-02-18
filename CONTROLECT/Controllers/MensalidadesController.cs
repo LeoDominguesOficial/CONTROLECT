@@ -360,7 +360,7 @@ namespace CONTROLECT.Controllers
                 
                 
                 
-                EnviarEmail(mensalidade.NumeroRecibo.ToString() + AnoCorrespondente.ToString(), "ldomingues@gmail.com", mensalidade.Valor, IdMes.ToString(), "Teste Usuário");
+                //EnviarEmail(mensalidade.NumeroRecibo.ToString() + AnoCorrespondente.ToString(), "ldomingues@gmail.com", mensalidade.Valor, IdMes.ToString(), "Teste Usuário");
 
 
                 objAtleta = _context.Atleta.Where(a => a.IdAtleta.Equals(mensalidade.IdAtleta)).FirstOrDefault();

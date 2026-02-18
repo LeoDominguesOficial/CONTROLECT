@@ -24,7 +24,7 @@
 
         </p>
         <p>
-            <input type="submit" value="Pesquisar" class="btn btn-primary" /> |
+            <input type="submit" value="Pesquisar" class="btn btn-primary" /> 
         </p>
     </div>
 </form>
@@ -51,6 +51,9 @@
             </th>
             <th>
                 Data da Venda
+            </th>
+            <th>
+                Comprador
             </th>
 
             @*<th></th>*@
@@ -83,13 +86,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DataVenda)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comprador)
+                </td>
 
 
             <td>
 
                 <a asp-action="Edit" asp-route-id="@item.IdItemVenda" class="btn btn-primary btn-sm">Editar</a> |
-                @*<a asp-action="Details" asp-route-id="@item.IdMensalidade" class="btn btn-info btn-sm">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdMensalidade" class="btn btn-danger btn-sm">Excluir</a>*@
+                    @*<a asp-action="Details" asp-route-id="@item.IdMensalidade" class="btn btn-info btn-sm">Detalhes</a> |*@
+                <a asp-action="Delete" asp-route-id="@item.IdItemVenda" class="btn btn-danger btn-sm">Excluir</a>
             </td>
         </tr>
         }

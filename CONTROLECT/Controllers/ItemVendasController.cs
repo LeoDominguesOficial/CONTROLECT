@@ -21,9 +21,10 @@ namespace CONTROLECT.Controllers
         // GET: ItemVendas
         public async Task<IActionResult> Index(int ItemId, DateTime dataInicial, DateTime dataFinal)
         {
+            
             ViewData["ItemId"] = new SelectList(_context.Item.Where(a => a.Ativo == true && a.Loja == true).OrderBy(a => a.NomeItem), "IdItem", "NomeItem");
 
-            var vendas = _context.ItemVenda.Where(a => a.Lanchonete == true)
+            var vendas = _context.ItemVenda.Where(a => a.Loja == true)
                 .Include(a=>a.IdFormaPagamentoNavigation)
                 .Include(a=>a.IdItemNavigation)
                 .Where(a=>a.DataVenda >= dataInicial && a.DataVenda <= dataFinal)
@@ -58,6 +59,9 @@ namespace CONTROLECT.Controllers
         // GET: ItemVendas/Create
         public IActionResult Create()
         {
+            ViewData["IdItem"] = new SelectList(_context.Item.Where(a => a.Ativo == true && a.Loja == true).OrderBy(a => a.NomeItem), "IdItem", "NomeItem");
+            ViewData["IdFormaPagamento"] = new SelectList(_context.Formapagamento.OrderBy(a => a.IdFormaPagamento), "IdFormaPagamento", "NomeFormaPagamento");
+
             return View();
         }
 
@@ -70,6 +74,12 @@ namespace CONTROLECT.Controllers
         {
             if (ModelState.IsValid)
             {
+                ItemVenda.ValorTotal = ItemVenda.ValorUnitario * ItemVenda.Quantidade;
+                ItemVenda.DataVenda = DateTime.Now.Date;
+                ItemVenda.DataHoraVenda = DateTime.Now;
+                ItemVenda.Lanchonete = false;
+                ItemVenda.Loja = true;
+
                 _context.Add(ItemVenda);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
