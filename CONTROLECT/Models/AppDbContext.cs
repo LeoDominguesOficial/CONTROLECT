@@ -251,7 +251,7 @@ namespace CONTROLECT.Models
 
                 entity.ToTable("ITEM");
 
-                entity.Property(e => e.IdItem).ValueGeneratedNever();
+                //entity.Property(e => e.IdItem).ValueGeneratedNever();
 
                 entity.Property(e => e.Valor).HasColumnType("decimal(18, 2)");
 
