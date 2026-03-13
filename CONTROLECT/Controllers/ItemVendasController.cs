@@ -95,11 +95,19 @@ namespace CONTROLECT.Controllers
                 return NotFound();
             }
 
+
+
+
             var ItemVenda = await _context.ItemVenda.FindAsync(id);
             if (ItemVenda == null)
             {
                 return NotFound();
             }
+
+            ViewData["IdFormaPagamento"] = new SelectList(_context.Formapagamento.OrderBy(a => a.IdFormaPagamento), "IdFormaPagamento", "NomeFormaPagamento");
+            ViewData["IdItem"] = new SelectList(_context.Item.OrderBy(a => a.NomeItem), "IdItem", "NomeItem");
+
+
             return View(ItemVenda);
         }
 
@@ -114,6 +122,8 @@ namespace CONTROLECT.Controllers
             {
                 return NotFound();
             }
+
+            ItemVenda.ValorTotal = ItemVenda.Quantidade * ItemVenda.ValorUnitario;
 
             if (ModelState.IsValid)
             {
