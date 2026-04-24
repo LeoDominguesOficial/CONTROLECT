@@ -1,146 +1,119 @@
-﻿@*@model IEnumerable<CONTROLECT.Models.Mensalidade>*@
-@model PagedList.IPagedList<CONTROLECT.Models.Mensalidade>
+﻿@model PagedList.IPagedList<CONTROLECT.Models.Mensalidade>
 
 @{
     ViewData["Title"] = "Index";
 }
 
+<!-- CSS do Bootstrap (Garante que o estilo do modal exista) -->
+@* <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> *@
+
 <h4>Mensalidades - Listar</h4>
 
 <p>
     <a asp-action="Create" class="btn btn-success btn-sm">Novo</a>
+    @* <button type="button" class="btn btn-warning btn-sm" onclick="alert('JS da página funcionando!')">Teste de Script</button> *@
 </p>
 
-
 <form asp-action="Index" method="get">
-    <div class="form-actions no-color">
+    <div class="table table-sm small">
         <p>
             Atleta: <input type="text" name="NomeAtleta" value="@ViewData["FiltroAtleta"]" />
-
             Professor: @Html.DropDownList("ProfessorId", "--Selecione--")
             Modalidade: @Html.DropDownList("ModalidadeId", "--Selecione--")
-        </p>
-        <p>
+
             Mês: @Html.DropDownList("Meses", "--Selecione--")
             Ano: <input type="text" name="Ano" value="@ViewData["Ano"]" />
-
-
-            <input type="submit" value="Pesquisar" class="btn btn-primary" /> |
+            <input type="submit" value="Pesquisar" class="btn btn-primary" /> 
             <a asp-action="Index" class="btn btn-outline-primary">Carregar Listagem completa</a>
-
         </p>
     </div>
 </form>
 
-
-<table id="table">
+<table id="table" class="table table-sm small">
     <thead>
         <tr>
-            <th>
-                Pagamento
-            </th>
-            <th>
-                Recibo
-            </th>
-
-            <th>
-                Valor
-            </th>
-            <th>
-                Mês Pgto
-            </th>
-            <th>
-                Forma Pgto
-            </th>
-            <th>
-                Atleta
-            </th>
-            <th>
-                Modalidade
-            </th>
-            <th>
-                Professor
-            </th>
-
-            @*<th></th>*@
+            <th>PAGAMENTO</th>
+            <th>RECIBO</th>
+            <th>VALOR</th>
+            <th>MÊS PGTO</th>
+            <th>FORMA PGTO</th>
+            <th>ATLETA</th>
+            <th>MODALIDADE</th>
+            <th>PROFESSOR</th>
+            <th>AÇÕES</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataPagamento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumeroRecibo) / @Html.DisplayFor(modelItem => item.DataPagamento.Year)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.Valor)
-            </td>
-            <td>
-@*                 <select asp-for=@item.IdMes class="form-control small" asp-items="ViewBag.Meses" text="Selecione"></select>
- *@                
-                    @Html.DisplayFor(modelItem => item.IdMesNavigation.NomeMes)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.IdFormaPagamentoNavigation.NomeFormaPagamento)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.IdAtletaNavigation.PrimeiroNome) @Html.DisplayFor(modelItem => item.IdAtletaNavigation.UltimoNome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdModalidadeNavigation.NomeModalidade)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.IdProfessorNavigation.NomeProfessor)
-
-                @* <select asp-for=@item.IdProfessor class="form-control  small" asp-items="ViewBag.IdProfessor"></select> *@
-            </td>
-
-            <td>
-
-                <a asp-action="Edit" asp-route-id="@item.IdMensalidade" class="btn btn-primary btn-sm">Editar</a> |
-                    @*<a asp-action="Details" asp-route-id="@item.IdMensalidade" class="btn btn-info btn-sm">Detalhes</a> |*@
-                <a asp-action="Delete" asp-route-id="@item.IdMensalidade" class="btn btn-danger btn-sm">Excluir</a>
-            </td>
-        </tr>
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.DataPagamento)</td>
+                <td>@Html.DisplayFor(modelItem => item.NumeroRecibo) / @Html.DisplayFor(modelItem => item.DataPagamento.Year)</td>
+                <td>@Html.DisplayFor(modelItem => item.Valor)</td>
+                <td>@Html.DisplayFor(modelItem => item.IdMesNavigation.NomeMes)</td>
+                <td>@Html.DisplayFor(modelItem => item.IdFormaPagamentoNavigation.NomeFormaPagamento)</td>
+                <td>
+                    <!-- Link com compatibilidade para Bootstrap 4 e 5 -->
+                    <a href="javascript:void(0)"
+                       class="btn-abrir-modal"
+                       data-id="@item.IdAtleta"
+                       data-nome="@item.IdAtletaNavigation.PrimeiroNome @item.IdAtletaNavigation.UltimoNome"
+                       data-toggle="modal"
+                       data-target="#fotoModal"
+                       data-bs-toggle="modal"
+                       data-bs-target="#fotoModal">
+                        @item.IdAtletaNavigation.PrimeiroNome @item.IdAtletaNavigation.UltimoNome
+                    </a>
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.IdModalidadeNavigation.NomeModalidade)</td>
+                <td>@Html.DisplayFor(modelItem => item.IdProfessorNavigation.NomeProfessor)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdMensalidade" class="btn btn-primary btn-sm">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdMensalidade" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
 
-
-<div>
-    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
-    of @Model.PageCount
-
-    @if (Model.HasPreviousPage)
-    {
-        @Html.ActionLink("<<", "Index", new { pagina = 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, nomeAtleta = ViewData["FiltroAtleta"], modalidadeId = ViewData["FiltroModalidade"], professorId = ViewData["FiltroProfessor"], meses = ViewData["FiltroMes"], ano = ViewData["Ano"] })
-        @Html.Raw(" ");
-        @Html.ActionLink("< Anterior", "Index", new { pagina = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, nomeAtleta = ViewData["FiltroAtleta"], modalidadeId = ViewData["FiltroModalidade"], professorId = ViewData["FiltroProfessor"], meses = ViewData["FiltroMes"], ano = ViewData["Ano"] })
-    }
-    else
-    {
-        @:<<
-        @Html.Raw(" ");
-        @:< Anterior
-    }
-
-    @if (Model.HasNextPage)
-    {
-        @Html.ActionLink("Próxima >", "Index", new { pagina = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, nomeAtleta = ViewData["FiltroAtleta"], modalidadeId = ViewData["FiltroModalidade"], professorId = ViewData["FiltroProfessor"], meses = ViewData["FiltroMes"], ano = ViewData["Ano"] })
-        @Html.Raw(" ");
-        @Html.ActionLink(">>", "Index", new { pagina = Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, nomeAtleta = ViewData["FiltroAtleta"], modalidadeId = ViewData["FiltroModalidade"], professorId = ViewData["FiltroProfessor"], meses = ViewData["FiltroMes"], ano = ViewData["Ano"] })
-    }
-    else
-    {
-        @:Próxima >
-        @Html.Raw(" ")
-        @:>>
-    }
+<!-- Modal Único -->
+<div class="modal fade" id="fotoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Foto do Atleta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <h6 id="nomeAtletaModal" class="mb-3"></h6>
+                <img id="fotoAtletaExibicao" src="" alt="Foto" class="img-fluid rounded shadow" style="max-height: 400px;" />
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Scripts Necessários (Forçados para teste) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.btn-abrir-modal').on('click', function() {
+            var id = $(this).data('id');
+            var nome = $(this).data('nome');
+
+            $('#nomeAtletaModal').text(nome);
+            $('#fotoAtletaExibicao').attr('src', '/Atletas/GetFoto/' + id);
+
+            var meuModal = new bootstrap.Modal(document.getElementById('fotoModal'));
+            meuModal.show();
+        });
+
+        // FORÇAR LIMPEZA DO FUNDO AO FECHAR
+        $('#fotoModal').on('hidden.bs.modal', function () {
+            $('.modal-backdrop').remove(); // Remove o fundo escuro na marra
+            $('body').removeClass('modal-open'); // Devolve o scroll da página
+            $('body').css('padding-right', '');
+        });
+    });
+</script>

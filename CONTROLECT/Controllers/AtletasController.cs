@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CONTROLECT.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CONTROLECT.Models;
 using PagedList;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CONTROLECT.Controllers
 {
@@ -24,7 +25,7 @@ namespace CONTROLECT.Controllers
         // GET: Atletas
         public IActionResult Index(string sortOrder, string nomeAtleta, string apelido, bool situacaoFiltro, int idModalidade, int? pagina)
         {
-            int paginaTamanho = 20;
+            int paginaTamanho = 10;
             int paginaNumero = (pagina ?? 1);
 
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -124,10 +125,27 @@ namespace CONTROLECT.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdAtleta,PrimeiroNome,UltimoNome,NomeCompleto,NomeResponsavel,Identidade,Cpf,Telefone,Ddd,Celular,Email,Endereco,Bairro,Numero,Cep,IdModalidade,Apelido,DataCadastro,Ativo")] Atleta atleta)
+        public async Task<IActionResult> Create(Atleta atleta, IFormFile file)
         {
-           if (ModelState.IsValid)
+
+            if (file != null && file.Length > 0)
             {
+                using (var ms = new MemoryStream())
+                {
+                    file.CopyTo(ms);
+                    atleta.Foto = ms.ToArray(); // Converte para byte[]
+                }
+            }
+
+            atleta.DataCadastro = DateTime.Now;
+            _context.Atleta.Add(atleta);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+            if (ModelState.IsValid)
+            {
+
+
                 atleta.DataCadastro = DateTime.Now;
                 _context.Add(atleta);
                 await _context.SaveChangesAsync();
@@ -159,7 +177,7 @@ namespace CONTROLECT.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdAtleta,PrimeiroNome,UltimoNome,NomeCompleto,NomeResponsavel,Identidade,Cpf,Telefone,Ddd,Celular,Email,Endereco,Bairro,Numero,Cep,Apelido,DataCadastro,Ativo")] Atleta atleta)
+        public async Task<IActionResult> Edit(int id, Atleta atleta, IFormFile file)
         {
             if (id != atleta.IdAtleta)
             {
@@ -170,6 +188,23 @@ namespace CONTROLECT.Controllers
             {
                 try
                 {
+                    // Atualiza a foto se o usuário enviou uma nova
+                    if (file != null && file.Length > 0)
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            await file.CopyToAsync(ms);
+                            atleta.Foto = ms.ToArray(); // salva como byte[]
+                        }
+                    }
+                    else
+                    {
+                        // Mantém a foto existente se não foi enviada nova
+                        var atletaExistente = await _context.Atleta.AsNoTracking()
+                            .FirstOrDefaultAsync(a => a.IdAtleta == id);
+                        atleta.Foto = atletaExistente?.Foto;
+                    }
+
                     _context.Update(atleta);
                     await _context.SaveChangesAsync();
                 }
@@ -216,6 +251,16 @@ namespace CONTROLECT.Controllers
             _context.Atleta.Remove(atleta);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public FileContentResult GetFoto(int id)
+        {
+            var atleta = _context.Atleta.Find(id);
+            if (atleta?.Foto != null)
+            {
+                return File(atleta.Foto, "image/jpeg"); // ou "image/png" se necessário
+            }
+            return null;
         }
 
         private bool AtletaExists(int id)

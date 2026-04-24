@@ -26,17 +26,23 @@
 </form>
 
 
-<table id="tblatleta" class="table table-striped table-bordered table-sm table w-auto text-xsmall">
+<table id="tblatleta" class="table table-sm small">
 
     <thead>
         <tr>
             <th>
                 @*@Html.DisplayNameFor(model => model.NomeCompleto)*@
-                Nome Completo
+                NOME COMPLETO
             </th>
+
             <th>
                 @*@Html.DisplayNameFor(model => model.NomeCompleto)*@
-                Apelido
+                APELIDO
+            </th>
+
+            <th>
+                @*@Html.DisplayNameFor(model => model.NomeCompleto)*@
+                RESPONSÁVEL
             </th>
 
             <th>
@@ -45,17 +51,17 @@
             </th>
 
             <th>
-                Celular
+                CELULAR
                 @*@Html.DisplayNameFor(model => model.Celular)*@
             </th>
 
             <th>
-                Ativo
+                ATIVO
                 @* @Html.DisplayNameFor(model => model.Ativo) *@
             </th>
 
             <th>
-                Data de Cadastro
+                CADASTRO
                 @* @Html.DisplayNameFor(model => model.Ativo) *@
             </th>
 
@@ -77,6 +83,10 @@
 
                 <td>
                     @Html.DisplayFor(modelItem => item.Apelido)
+                </td>
+
+                <td style="width:250px">
+                    @Html.DisplayFor(modelItem => item.NomeResponsavel)
                 </td>
 
                 <td>

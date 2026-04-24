@@ -115,6 +115,9 @@ namespace CONTROLECT.Models
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Foto)
+                    .HasColumnType("varbinary(max)");
+
             });
 
             modelBuilder.Entity<AtletaModalidade>(entity =>

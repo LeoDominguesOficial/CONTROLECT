@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -50,6 +51,7 @@ namespace CONTROLECT.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime DataCadastro { get; set; }
 
+        public byte[] Foto { get; set; }
 
         public virtual ICollection<AtletaModalidade> AtletaModalidade { get; set; }
         public virtual ICollection<Mensalidade> Mensalidade { get; set; }

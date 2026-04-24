@@ -149,7 +149,7 @@ namespace CONTROLECT.Controllers
         public IActionResult Index(string sortOrder, string nomeAtleta, int modalidadeId, int professorId, int meses, int ano, int? pagina)
         {
             int mesAtual = DateTime.Now.Month;
-            int paginaTamanho = 25;
+            int paginaTamanho = 10;
             int paginaNumero = (pagina ?? 1);
 
             ViewData["IdAtleta"] = new SelectList(_context.Atleta.Where(a=>a.Ativo == true).OrderBy(a => a.NomeCompleto), "IdAtleta", "NomeCompleto");
@@ -573,6 +573,17 @@ namespace CONTROLECT.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        //public FileContentResult GetFoto(int id)
+        //{
+        //    var atleta = _context.Atleta.Find(id);
+        //    if (atleta?.Foto != null)
+        //    {
+        //        return File(atleta.Foto, "image/jpeg");
+        //    }
+        //    return null;
+        //}
+
 
         private bool MensalidadeExists(int id)
         {

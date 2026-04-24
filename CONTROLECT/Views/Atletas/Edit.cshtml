@@ -8,8 +8,8 @@
 <h4>Atleta - Editar</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+    <div class="col-md-8">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="IdAtleta" />
 
@@ -94,6 +94,14 @@
                 <span asp-validation-for="Cep" class="text-danger"></span>
             </div>
 
+            <!-- Upload de nova foto -->
+            <div class="form-group">
+                <label for="arquivoFoto">Atualizar Foto</label>
+                <input type="file" name="file" accept=".jpg,.jpeg" class="form-control-file" />
+            </div>
+
+
+
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Ativo" /> @Html.DisplayNameFor(model => model.Ativo)
@@ -109,7 +117,33 @@
             </div>
         </form>
     </div>
+
+    <!-- Coluna com a foto -->
+    <div class="col-md-4 text-center">
+        <img src="@Url.Action("GetFoto", "Atletas", new { id = Model.IdAtleta })"
+             alt="Foto do atleta"
+             class="img-thumbnail"
+             style="cursor:pointer; max-width:300px; height:300px;"
+             data-bs-toggle="modal"
+             data-bs-target="#fotoModal" />
+    </div>
+
 </div>
 
 
-
+<!-- Modal -->
+<div class="modal fade" id="fotoModal" tabindex="-1" aria-labelledby="fotoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fotoModalLabel">Foto do Atleta</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="@Url.Action("GetFoto", "Atletas", new { id = Model.IdAtleta })"
+                     alt="Foto do atleta"
+                     class="img-fluid" />
+            </div>
+        </div>
+    </div>
+</div>
